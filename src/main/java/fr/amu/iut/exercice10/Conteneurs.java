@@ -17,7 +17,7 @@ public class Conteneurs extends Application {
     public void start(Stage stage) {
         try {
             BorderPane root = FXMLLoader.load(getClass().getClassLoader().getResource("exercice10/ConteneursView.fxml"));
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 420, 420));
             stage.setTitle("Premier exemple manipulant les conteneurs");
             stage.show();
         } catch (Exception e) {
