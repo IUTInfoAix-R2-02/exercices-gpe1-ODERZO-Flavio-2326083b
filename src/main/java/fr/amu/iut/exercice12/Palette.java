@@ -1,6 +1,8 @@
-package fr.amu.iut.exercice2;
+package fr.amu.iut.exercice12;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -31,7 +33,6 @@ public class Palette extends Application {
     private HBox boutons;
     private VBox bas;
     private Label texteDuBas;
-
     private EventHandler<ActionEvent> gestionnaireEvenement;
 
     @Override
@@ -54,17 +55,36 @@ public class Palette extends Application {
         bas.getChildren().addAll(boutons, texteDuBas);
         bas.setAlignment(Pos.CENTER_RIGHT);
 
-        vert = new CustomButton("Vert", "#31BCA4");
+        vert = new CustomButton("Vert", "#31FF4A");
         rouge = new CustomButton("Rouge", "#F21411");
         bleu = new CustomButton("Bleu", "#3273A4");
 
         gestionnaireEvenement = (event) -> {
             sourceOfEvent = (CustomButton) event.getSource();
+            sourceOfEvent.setNbClics(sourceOfEvent.getNbClics() + 1);
+        };
+
+        ChangeListener<Number> nbClicsListener = new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number ancien, Number nouveau) {
+                texteDuHaut.setText(sourceOfEvent.getText() + " cliqué " +
+                        nouveau + " fois");
+                panneau.setStyle("-fx-background-color: " + sourceOfEvent.getCouleur());
+
+                texteDuBas.setText(sourceOfEvent.getText() + " est une jolie couleur");
+                texteDuBas.setStyle("-fx-text-fill: " + sourceOfEvent.getCouleur());
+                // ces deux lignes ne fonctionnent pas pour une raison inconnue?
+                // j'y étais presque
+            }
         };
 
         vert.setOnAction(gestionnaireEvenement);
         rouge.setOnAction(gestionnaireEvenement);
         bleu.setOnAction(gestionnaireEvenement);
+
+        vert.nbClicsProperty().addListener(nbClicsListener);
+        rouge.nbClicsProperty().addListener(nbClicsListener);
+        bleu.nbClicsProperty().addListener(nbClicsListener);
 
         boutons.getChildren().addAll(vert, rouge, bleu);
 
