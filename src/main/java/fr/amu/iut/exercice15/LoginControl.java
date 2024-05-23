@@ -56,20 +56,26 @@ public class LoginControl extends GridPane {
         // - pas de maj
         // - pas de chiffre
         BooleanProperty mdpNeRespectePasConditions = new SimpleBooleanProperty(false);
-        ChangeListener<String> pwdChangeListener = new ChangeListener<String>() {
+        BooleanBinding checkConditionsMdp = new BooleanBinding() {
+            {
+                this.bind(pwd.textProperty());
+            }
             @Override
-            public void changed(ObservableValue<? extends String> observableValue, String ancien, String nouveau) {
+            protected boolean computeValue() {
                 boolean pasDeChiffre, pasDeMaj, moinsDe8Char;
 
-                pasDeChiffre = !nouveau.matches(".*[0-9].*");
-                pasDeMaj = !nouveau.matches(".*[A-Z].*");
-                moinsDe8Char = nouveau.length() < 8;
+                String mdp = pwd.getText();
+                pasDeChiffre = !mdp.matches(".*[0-9].*");
+                pasDeMaj = !mdp.matches(".*[A-Z].*");
+                moinsDe8Char = mdp.length() < 8;
 
-                mdpNeRespectePasConditions.set(pasDeChiffre || pasDeMaj || moinsDe8Char);
+                return pasDeChiffre || pasDeMaj || moinsDe8Char;
             }
         };
-        pwd.textProperty().addListener(pwdChangeListener);
-        okBtn.disableProperty().bind(mdpNeRespectePasConditions.then(true).otherwise(false));
+
+        mdpNeRespectePasConditions.bind(checkConditionsMdp);
+
+        okBtn.disableProperty().bind(mdpNeRespectePasConditions);
     }
 
     @FXML
