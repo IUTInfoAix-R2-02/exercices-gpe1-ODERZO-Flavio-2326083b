@@ -55,28 +55,20 @@ public class LoginControl extends GridPane {
         // - mdp moins de 8 char
         // - pas de maj
         // - pas de chiffre
-
-        BooleanBinding moinsDe8Char = pwd.textProperty().length().lessThan(8);
-        BooleanProperty pasDeMaj = new SimpleBooleanProperty(true);
-        BooleanProperty pasDeChiffre = new SimpleBooleanProperty(true);
+        BooleanProperty mdpNeRespectePasConditions = new SimpleBooleanProperty(false);
         ChangeListener<String> pwdChangeListener = new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String ancien, String nouveau) {
-                if (nouveau.matches(".*[0-9].*")) {
-                    pasDeChiffre.set(false);
-                }
-                else pasDeChiffre.set(true);
+                boolean pasDeChiffre, pasDeMaj, moinsDe8Char;
 
-                if (nouveau.matches(".*[A-Z].*")) {
-                    pasDeMaj.set(false);
-                }
-                else pasDeMaj.set(true);
+                pasDeChiffre = !nouveau.matches(".*[0-9].*");
+                pasDeMaj = !nouveau.matches(".*[A-Z].*");
+                moinsDe8Char = nouveau.length() < 8;
+
+                mdpNeRespectePasConditions.set(pasDeChiffre || pasDeMaj || moinsDe8Char);
             }
         };
         pwd.textProperty().addListener(pwdChangeListener);
-        BooleanBinding pasDeMajOuPasDeChiffre = Bindings.or(pasDeMaj, pasDeChiffre);
-        When mdpNeRespectePasConditions = new When(Bindings.or(pasDeMajOuPasDeChiffre, moinsDe8Char));
-
         okBtn.disableProperty().bind(mdpNeRespectePasConditions.then(true).otherwise(false));
     }
 
