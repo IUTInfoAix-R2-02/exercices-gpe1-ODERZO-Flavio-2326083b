@@ -90,7 +90,7 @@ public class Palette extends Application {
 
         root.setCenter(panneau);
         root.setTop(texteDuHaut);
-        root.setBottom(boutons);
+        root.setBottom(bas);
 
         Scene scene = new Scene(root);
 
