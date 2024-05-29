@@ -32,8 +32,11 @@ public class ConvertisseurTemperatures extends Application {
         VBox panneauCelsius = new VBox(30);
         VBox panneauFahrenheit = new VBox(30);
 
-        labelC = new Label(" °C");
-        labelF = new Label(" °F");
+        labelC = new Label("°C");
+        labelF = new Label("°F");
+
+        labelC.setStyle("-fx-font-size: 30px; -fx-font-weight: bold");
+        labelF.setStyle("-fx-font-size: 30px; -fx-font-weight: bold");
 
         textFieldF = new TextField("32");
         textFieldC = new TextField("0");
@@ -41,7 +44,7 @@ public class ConvertisseurTemperatures extends Application {
         textFieldC.setPrefSize(50, 20);
 
 
-        sliderCelcius = new Slider(0, 100, 10);
+        sliderCelcius = new Slider(0, 100, 0);
         sliderCelcius.setShowTickMarks(true);
         sliderCelcius.setShowTickLabels(true);
         sliderCelcius.setMajorTickUnit(10);
@@ -49,7 +52,7 @@ public class ConvertisseurTemperatures extends Application {
         sliderCelcius.setPrefSize(50, 700);
         panneauCelsius.getChildren().addAll(labelC, sliderCelcius, textFieldC);
 
-        sliderFahrenheit = new Slider(0, 212, 10);
+        sliderFahrenheit = new Slider(0, 212, 32);
         sliderFahrenheit.setShowTickMarks(true);
         sliderFahrenheit.setShowTickLabels(true);
         sliderFahrenheit.setMajorTickUnit(10);
